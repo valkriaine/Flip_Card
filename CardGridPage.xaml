@@ -1,0 +1,66 @@
+﻿<Page
+    x:Class="FlipBear.CardGridPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:FlipBear.Classes"
+    mc:Ignorable="d"
+    Background="{StaticResource SystemControlAcrylicWindowBrush}"
+    RequestedTheme="Dark"
+    NavigationCacheMode="Required">
+
+    <Grid HorizontalAlignment="Stretch" x:Name="Cards">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width=" 9*"/>
+        </Grid.ColumnDefinitions>
+        <GridView  x:Name="FrontGrid" IsItemClickEnabled="True"  ItemClick="cardsGrid_ItemClick" ContainerContentChanging="cardGrid_ContainerContentChanging" Grid.Column="1">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid MaximumRowsOrColumns="20" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="data:Card">
+                    <Grid x:Name="item" Height="150" Width="250" Margin="15" Background="{x:Bind ColorString}">
+                        <Grid.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Delete" Click="Delete_Click"/>
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem Text="Select" Click="select_Click"/>
+                            </MenuFlyout>
+                        </Grid.ContextFlyout>
+                        <Image Width="250" Height="150">
+                            <Image.Source>
+                                <BitmapImage CreateOptions="IgnoreImageCache" UriSource="{Binding Front}" />
+                            </Image.Source>
+                        </Image>
+                        <TextBlock Text="{x:Bind FrontText}" TextWrapping="Wrap" FontSize="20" Margin="8" Foreground="Black"/>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        <GridView  x:Name="BackGrid" IsItemClickEnabled="True"  ItemClick="cardsGrid_ItemClick" ContainerContentChanging="cardGrid_ContainerContentChanging" Visibility="Collapsed" Grid.Column="1">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="data:Card">
+                    <Grid x:Name="item" Height="150" Width="250" Margin="15" Background="{x:Bind ColorString}">
+                        <Grid.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Delete" Click="Delete_Click"/>
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem Text="Select" Click="select_Click"/>
+                            </MenuFlyout>
+                        </Grid.ContextFlyout>
+                        <Image Width="250" Height="150">
+                            <Image.Source>
+                                <BitmapImage CreateOptions="IgnoreImageCache" UriSource="{Binding Back}" />
+                            </Image.Source>
+                        </Image>
+                        <TextBlock Text="{x:Bind BackText}" FontSize="20" Margin="8" Foreground="Black"/>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+    </Grid>
+</Page>

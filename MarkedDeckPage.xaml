@@ -1,0 +1,93 @@
+﻿<Page
+    x:Class="FlipBear.MarkedDeckPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FlipBear"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:FlipBear.Classes"
+    xmlns:media="using:Windows.UI.Xaml.Media"
+    mc:Ignorable="d"
+    xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
+    Background="{StaticResource SystemControlAltMediumLowAcrylicWindowMediumBrush}"
+    RequestedTheme="Dark"
+    NavigationCacheMode="Required">
+
+    <Page.Resources>
+        <media:AcrylicBrush x:Key="BackgroundBrush" BackgroundSource="HostBackdrop"></media:AcrylicBrush>
+        <AcrylicBrush x:Key="DialogBrush" BackgroundSource="Backdrop" TintColor="Black" TintOpacity=".3"/>
+        <DataTemplate x:Key="DeckTemplate" x:DataType="data:Deck">
+            <Grid Background="Transparent" Padding="20" Visibility="Visible" ToolTipService.ToolTip="Open deck">
+                <Grid.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Delete" Click="delete_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem Text="Rename" Click="rename_Click"/>
+                        <MenuFlyoutItem Text="Select" Click ="EditFromFlyout"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutSubItem Text="Mark as">
+                            <ToggleMenuFlyoutItem Text="Mastered" Click="Mastered_Click" IsChecked="{x:Bind Mastered}"/>
+                            <ToggleMenuFlyoutItem Text="Book mark" Click="BookMarked_Click" IsChecked="{x:Bind Marked}"/>
+                        </MenuFlyoutSubItem>
+                    </MenuFlyout>
+                </Grid.ContextFlyout>
+                <StackPanel Background="{StaticResource NavigationViewDefaultPaneBackground}">
+                    <Image x:Name="Cover" Source="{x:Bind Image}" VerticalAlignment="Top" Width="150" Height="200"/>
+                    <TextBlock x:Name="DeckText" FontSize="16" Text="{x:Bind Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock FontSize="10" Text="{x:Bind Number}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Rectangle Height="0.5" Width="150" HorizontalAlignment="Center" Fill="Transparent" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ButtonTemplate">
+            <Button Background="Transparent" Padding="20" Click="Add_Click" IsRightTapEnabled="False" Visibility="Visible" ToolTipService.ToolTip="Add new marked deck">
+                <StackPanel Background="{StaticResource NavigationViewDefaultPaneBackground}">
+                    <Image Source="Assets/Add.png" VerticalAlignment="Top" Width="150" Height="200"/>
+                    <TextBlock FontSize="16" Text="Add" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock FontSize="10" Text="New Deck" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Rectangle Height="0.5" Width="150" HorizontalAlignment="Center" Fill="Transparent" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+        <data:GridTemplateSelector x:Key="GridTemplateSelector"
+                                   x:Name="GridTemplateSelector"
+                                   DeckTemplate="{StaticResource DeckTemplate}"
+                                   ButtonTemplate="{StaticResource ButtonTemplate}"
+                                   ></data:GridTemplateSelector>
+    </Page.Resources>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Polygon Points="0,0 48,0 0,48" Stroke="Transparent" Fill="#FFD700"/>
+        <CommandBar x:Name="EditeBar" Background="Transparent" IsOpen="False" DefaultLabelPosition="Right" Grid.Row="0" HorizontalAlignment="Left"
+                            Margin="48,0,0,0">
+            <AppBarButton x:Name="editeButton" Icon="Edit" Label="Edit" Click="editeMode"/>
+        </CommandBar>
+        <GridView         Margin="48,0,0,0" 
+                          x:Name="gridList" 
+                          Grid.Row="1" 
+                          ItemTemplateSelector="{StaticResource GridTemplateSelector}"
+                          IsRightTapEnabled="True"   
+                          ItemsSource="{x:Bind viewModel.MarkedDecks}"
+                          ItemClick="gridList_ItemClick"
+                          >
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid MaximumRowsOrColumns="10" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+        </GridView>
+        <UI:AdControl ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
+              AdUnitId="test"
+                      Grid.Row="2"
+              HorizontalAlignment="Center"
+              Height="120"
+              VerticalAlignment="Bottom"
+              Width="500"/>
+    </Grid>
+</Page>
