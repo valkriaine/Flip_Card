@@ -1,8 +1,7 @@
 # Flip_Card
 A simple flash card application
 
-Get it on Microsoft Store:
-https://www.microsoft.com/en-us/p/flip-card/9nvtwj9grvz8?activetab=pivot:overviewtab
+<a href='//www.microsoft.com/store/apps/9nvtwj9grvz8?cid=storebadge&ocid=badge'><img src='https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png' alt='English badge' width='300'/></a>
 
 
 This is my first Windows UWP application. 
